@@ -1,4 +1,4 @@
-package com.example.fun_timer
+package com.jdtechsage.fun_timer
 
 import io.flutter.embedding.android.FlutterActivity
 
