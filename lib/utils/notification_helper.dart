@@ -4,6 +4,9 @@ class NotificationHelper {
   static final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
 
+  static FlutterLocalNotificationsPlugin get notifications =>
+      _notifications; // Expose plugin instance
+
   static Future<void> init() async {
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInit = DarwinInitializationSettings();
@@ -12,7 +15,6 @@ class NotificationHelper {
       iOS: iosInit,
     );
     await _notifications.initialize(initSettings);
-
     // Request permissions
     bool? androidGranted = await _notifications
         .resolvePlatformSpecificImplementation<
@@ -42,21 +44,5 @@ class NotificationHelper {
       iOS: iosDetails,
     );
     await _notifications.show(0, title, body, details);
-  }
-
-  // Expose Android-specific plugin
-  static AndroidFlutterLocalNotificationsPlugin? androidImplementation() {
-    return _notifications
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >();
-  }
-
-  // Expose iOS-specific plugin (if you need it later)
-  static IOSFlutterLocalNotificationsPlugin? iosImplementation() {
-    return _notifications
-        .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin
-        >();
   }
 }

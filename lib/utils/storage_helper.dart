@@ -8,7 +8,7 @@ class StorageHelper {
 
   static Future<void> saveTimerState(bool isRunning) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('timer_running', isRunning);
+    await prefs.setBool('timer_running', isRunning);
   }
 
   static Future<List<String>> getCustomMessages() async {
@@ -18,16 +18,16 @@ class StorageHelper {
 
   static Future<void> saveCustomMessages(List<String> messages) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('custom_messages', messages);
+    await prefs.setStringList('custom_messages', messages);
   }
 
   static Future<int> getTimerInterval() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('timer_interval') ?? 5; // Default 5 minutes
+    return prefs.getInt('timer_interval') ?? 5;
   }
 
   static Future<void> saveTimerInterval(int interval) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt('timer_interval', interval);
+    await prefs.setInt('timer_interval', interval);
   }
 }

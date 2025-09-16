@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fun_timer/utils/storage_helper.dart';
-import 'package:fun_timer/utils/messages.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:fun_timer/utils/messages.dart'; // To add excuses
+import 'package:google_mobile_ads/google_mobile_ads.dart'; // For interstitial ad
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -12,57 +12,37 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final TextEditingController _controller = TextEditingController();
-  final TextEditingController _intervalController = TextEditingController();
   List<String> _customMessages = [];
-  int _timerInterval = 5; // Default 5 minutes
-  InterstitialAd? _interstitialAd;
+  InterstitialAd? _interstitialAd; // Ad on settings
 
   @override
   void initState() {
     super.initState();
     _loadCustomMessages();
-    _loadTimerInterval();
-    _loadInterstitialAd();
+    _loadInterstitialAd(); // Load ad
   }
 
+  // Load saved custom messages
   void _loadCustomMessages() async {
     _customMessages = await StorageHelper.getCustomMessages();
     setState(() {});
   }
 
-  void _loadTimerInterval() async {
-    _timerInterval = await StorageHelper.getTimerInterval();
-    _intervalController.text = _timerInterval.toString();
-    setState(() {});
-  }
-
+  // Add new message
   void _addMessage() {
     if (_controller.text.isNotEmpty) {
       _customMessages.add(_controller.text);
       StorageHelper.saveCustomMessages(_customMessages);
       _controller.clear();
       setState(() {});
-      _showAd();
+      _showAd(); // Show ad after adding
     }
   }
 
-  void _saveTimerInterval() {
-    int? newInterval = int.tryParse(_intervalController.text);
-    if (newInterval != null && newInterval >= 1 && newInterval <= 30) {
-      _timerInterval = newInterval;
-      StorageHelper.saveTimerInterval(newInterval);
-      setState(() {});
-      _showAd();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Enter a number between 1 and 30 minutes')),
-      );
-    }
-  }
-
+  // Load interstitial ad
   void _loadInterstitialAd() {
     InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712', // Test ID
+      adUnitId: 'ca-app-pub-7253685603699909/6312348511', // Test ID
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
@@ -73,16 +53,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  // Show ad if loaded
   void _showAd() {
     _interstitialAd?.show();
-    _interstitialAd = null;
+    _interstitialAd = null; // Reload after show
     _loadInterstitialAd();
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _intervalController.dispose();
     _interstitialAd?.dispose();
     super.dispose();
   }
@@ -103,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               decoration: InputDecoration(
                 labelText: 'Add Custom Excuse',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20), // Cool rounded
                 ),
               ),
             ),
@@ -116,29 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: const Text('Add Excuse'),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _intervalController,
-              decoration: InputDecoration(
-                labelText: 'Timer Interval (minutes, 1-30)',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _saveTimerInterval,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              child: const Text('Set Interval'),
+              child: const Text('Add'),
             ),
             const SizedBox(height: 20),
             const Text('Your Custom Excuses:', style: TextStyle(fontSize: 18)),
@@ -147,7 +105,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 itemCount: _customMessages.length,
                 itemBuilder: (context, index) {
                   return Card(
-                    elevation: 4,
+                    elevation: 4, // Shadow for cool look
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),

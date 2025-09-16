@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fun_timer/screens/home_screen.dart';
 import 'package:fun_timer/utils/notification_helper.dart';
 import 'package:fun_timer/utils/background_helper.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart'; // For ads
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Fun Timer',
       theme: ThemeData(
-        useMaterial3: true, // Latest Material 3 for cool UI
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         scaffoldBackgroundColor: Colors.orange[50],
       ),
